@@ -1,0 +1,21 @@
+Package: ggdmcLikelihood
+Type: Package
+Title: Likelihood Computation for ggdmc package
+Version: 0.2.8.9
+Date: 2025-06-26
+Authors@R: c(person(given = "Yi-Shin", family = "Lin", role = c("aut", "cre"), email = "yishinlin001@gmail.com"))
+Maintainer: Yi-Shin Lin <yishinlin001@gmail.com>
+Description: 
+    This package provides likelihood computation functions for the ggdmc package. 
+    The package supports both single-subject and multi-subject likelihood computations.
+License: GPL (>= 2)  
+Imports: Rcpp (>= 1.0.7)
+Depends: R (>= 3.3.0)
+LinkingTo: 
+    Rcpp (>= 1.0.7),
+    RcppArmadillo (>= 0.10.7.5.0),
+    ggdmcHeaders
+Suggests: testthat
+RoxygenNote: 7.3.2
+Encoding: UTF-8
+NeedsCompilation: yes

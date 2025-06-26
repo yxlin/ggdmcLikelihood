@@ -1,10 +1,13 @@
-# ggdmcLikelihood
-ggdmcLikelihood provides likelihood computation functions for the ggdmc package. It supports both single-subject and multi-subject likelihood computations.
+q(save = "no")
+cat("\n\n-------------- Testing Build new likelihood ---------------")
+rm(list = ls())
+pkg <- c("ggdmcModel", "ggdmcLikelihood")
 
-# Getting Started
-The package is mainly to support ggdmc, so you can use it together with other ggdmc supporting packages.
+suppressPackageStartupMessages(tmp <- sapply(pkg, require, character.only = TRUE))
+cat("\nWorking directory: ", getwd(), "\n")
+fn <- "~/Documents/ggdmc/tests/testthat/Group1/data/lba_data0.rda"
+load(fn)
 
-```
 model <- ggdmcModel::BuildModel(
     p_map = list(
         A = "1", B = "1", mean_v = "M", sd_v = "1", st0 = "1",
@@ -44,17 +47,4 @@ for (i in seq_len(n_subject)) {
     cat("Subject ", i, "results in summed log likelihood = ", sll, "\n")
 }
 
-
-```
-
-# Prerequisites
-R (>= 3.3.0), Rcpp (>= 1.0.7), RcppArmadillo (>= 0.10.7.5.0), and ggdmcHeaders.
-
-See DESCRIPTION for details
-
-# Installation
-
-From CRAN:
-```
-install.packages("ggdmcLikelihood")
-```
+# testthat::expect_true(all.equal(sll, -144.1973, tolerance = 1e-6))
