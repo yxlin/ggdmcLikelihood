@@ -20,12 +20,13 @@ containing model parameters}
 \item{dmi}{One S4 data model instance (for one subject)}
 }
 \value{
-A List object containing aggregated results across subjects,
 with:
 \itemize{
-  \item \code{likelihood} - The total likelihood value over multiple
-  subject
-  \item Additional debugging information when \code{debug = TRUE}
+  \item \code{compute_likelihood} returns a list. Each element is
+         the likelihood for a subject. The element in the inner list
+         is the likelihood for a condition.
+  \item \code{compute_subject_likelihood} returns also a list. Each
+         element is the likelihood for a condition.
 }
 }
 \description{

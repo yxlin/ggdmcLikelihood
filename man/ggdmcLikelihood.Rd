@@ -4,9 +4,11 @@
 \name{ggdmcLikelihood}
 \alias{ggdmcLikelihood-package}
 \alias{ggdmcLikelihood}
-\title{Tools for Understanding How to Fit Cognitive Hierarchical Models}
+\title{Likelihood tools for the ggdmc package}
 \description{
-\pkg{ggdmcLikelihood} provides associated tools to access the internal data of likelihood_class
+This package provides functions likelihood computations associated
+with the ggdmc package. The package supports both single-subject
+and multi-subject likelihood computations.
 }
 \author{
 Yi-Shin Lin <yishinlin001@gmail.com>

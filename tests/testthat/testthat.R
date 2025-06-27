@@ -11,4 +11,5 @@ cat(getwd(), "\n")
 
 
 cat("\n================= Group 0 tests =======================\n\n")
-test_file(path = "Group0/1_compute_likelihood.r")
+test_file(path = "Group0/1_lba_likelihood.r")
+test_file(path = "Group0/2_ddm_likelihood.r")

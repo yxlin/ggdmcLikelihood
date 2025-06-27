@@ -1,9 +1,8 @@
-######### CORE ---------------------------------------------------
 #' Likelihood tools for the ggdmc package
 #'
-#' \pkg{ggdmcLikelihood} provides likelihood computation functions for
-#' the ggdmc package. It supports both single-subject and multi-subject
-#' likelihood computations.
+#' This package provides functions likelihood computations associated
+#' with the ggdmc package. The package supports both single-subject
+#' and multi-subject likelihood computations.
 #'
 #' @keywords package
 #'

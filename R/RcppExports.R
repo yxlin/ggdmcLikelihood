@@ -16,12 +16,14 @@
 #'                    containing model parameters
 #' @param debug Logical flag for debug mode (default = FALSE)
 #'
-#' @return A List object containing aggregated results across subjects,
+#' @return
 #' with:
 #' \itemize{
-#'   \item \code{likelihood} - The total likelihood value over multiple
-#'   subject
-#'   \item Additional debugging information when \code{debug = TRUE}
+#'   \item \code{compute_likelihood} returns a list. Each element is
+#'          the likelihood for a subject. The element in the inner list
+#'          is the likelihood for a condition.
+#'   \item \code{compute_subject_likelihood} returns also a list. Each
+#'          element is the likelihood for a condition.
 #' }
 #'
 #' @details These function expose the internal mechanism of the design-based

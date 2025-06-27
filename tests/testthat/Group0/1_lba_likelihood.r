@@ -1,4 +1,4 @@
-q(save = "no")
+# q(save = "no")
 cat("\n\n-------------- Testing Build new likelihood ---------------")
 rm(list = ls())
 pkg <- c("ggdmcModel", "ggdmcLikelihood")
@@ -30,12 +30,14 @@ for (i in seq_len(nsubject)) {
 }
 
 result <- compute_subject_likelihood(sub_dmis[[1]], parameters[[1]], F)
-result
+
 
 sll <- sum(sapply(result, function(x) {
     sum(log(x))
 }))
-print(sll)
+
+testthat::expect_true(all.equal(sll, -137.7996, tolerance = 1e-6))
+
 
 result <- compute_likelihood(pop_dmis, parameters, F)
 n_subject <- length(pop_dmis)

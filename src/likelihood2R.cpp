@@ -18,12 +18,14 @@
 //'                    containing model parameters
 //' @param debug Logical flag for debug mode (default = FALSE)
 //'
-//' @return A List object containing aggregated results across subjects,
+//' @return
 //' with:
 //' \itemize{
-//'   \item \code{likelihood} - The total likelihood value over multiple
-//'   subject
-//'   \item Additional debugging information when \code{debug = TRUE}
+//'   \item \code{compute_likelihood} returns a list. Each element is
+//'          the likelihood for a subject. The element in the inner list
+//'          is the likelihood for a condition.
+//'   \item \code{compute_subject_likelihood} returns also a list. Each
+//'          element is the likelihood for a condition.
 //' }
 //'
 //' @details These function expose the internal mechanism of the design-based
@@ -57,71 +59,66 @@
 //' @export
 // [[Rcpp::export]]
 Rcpp::List compute_likelihood(const Rcpp::List &dmis,
-                              const Rcpp::List &parameter_r,
-                              bool debug = false) {
-  auto l_ptr = new_likelihoods(dmis);
-  unsigned int n_subject = l_ptr.size();
+                              const Rcpp::List &parameter_r, bool debug = false)
+{
+    auto l_ptr = new_likelihoods(dmis);
+    unsigned int n_subject = l_ptr.size();
 
-  Rcpp::List out(n_subject);
+    Rcpp::List out(n_subject);
 
-  for (size_t subject_idx = 0; subject_idx < n_subject; ++subject_idx) {
-    if (debug) {
-      l_ptr[subject_idx]->print_is_empty_cell("Empty cells: ");
-      l_ptr[subject_idx]->print_rt();
+    for (size_t subject_idx = 0; subject_idx < n_subject; ++subject_idx)
+    {
+        if (debug)
+        {
+            l_ptr[subject_idx]->print_is_empty_cell("Empty cells: ");
+            l_ptr[subject_idx]->print_rt();
+        }
+
+        auto parameters =
+            Rcpp::as<std::vector<double>>(parameter_r[subject_idx]);
+
+        size_t n_cell = l_ptr[subject_idx]->m_model->m_n_cell;
+        Rcpp::List cell_out(n_cell);
+
+        for (size_t cell_idx = 0; cell_idx < n_cell; ++cell_idx)
+        {
+            l_ptr[subject_idx]->likelihood(parameters, debug);
+            cell_out[cell_idx] = l_ptr[subject_idx]->m_density[cell_idx];
+        }
+        out[subject_idx] = cell_out;
     }
 
-    auto parameters = Rcpp::as<std::vector<double>>(parameter_r[subject_idx]);
-
-    size_t n_cell = l_ptr[subject_idx]->m_model->m_n_cell;
-    Rcpp::List cell_out(n_cell);
-
-    for (size_t cell_idx = 0; cell_idx < n_cell; ++cell_idx) {
-
-      l_ptr[subject_idx]->likelihood(parameters, debug);
-      // l_ptr[subject_idx]->lba_likelihood(parameters, debug);
-      cell_out[cell_idx] = l_ptr[subject_idx]->m_density[cell_idx];
-    }
-    out[subject_idx] = cell_out;
-  }
-
-  return out;
+    return out;
 }
 //' @rdname compute_likelihood
 //' @export
 // [[Rcpp::export]]
 Rcpp::List compute_subject_likelihood(const Rcpp::S4 &dmi,
                                       const Rcpp::NumericVector &parameter_r,
-                                      bool debug = false) {
+                                      bool debug = false)
+{
+    Rcpp::S4 model_r = dmi.slot("model");
+    Rcpp::List data_r = dmi.slot("data");
+    std::string model_str = model_r.slot("type");
 
-  Rcpp::S4 model_r = dmi.slot("model");
-  Rcpp::List data_r = dmi.slot("data");
-  std::string model_str = model_r.slot("type");
+    auto l_ptr = new_likelihood(dmi);
+    if (debug)
+    {
+        l_ptr->print_is_empty_cell("Empty cells: ");
+        l_ptr->print_rt();
+    }
 
-  auto l_ptr = new_likelihood(dmi);
-  if (debug) {
-    l_ptr->print_is_empty_cell("Empty cells: ");
-    l_ptr->print_rt();
-  }
+    auto parameters = Rcpp::as<std::vector<double>>(parameter_r);
+    size_t n_cell = l_ptr->m_model->m_n_cell;
 
-  auto parameters = Rcpp::as<std::vector<double>>(parameter_r);
-  size_t n_cell = l_ptr->m_model->m_n_cell;
+    // This step computes likelihoods and create an output, m_density.
+    l_ptr->likelihood(parameters, debug);
+    Rcpp::List cell_out(n_cell);
 
-  // This step computes likelihoods and create an output, m_density.
-  l_ptr->likelihood(parameters, debug);
+    for (size_t cell_idx = 0; cell_idx < n_cell; ++cell_idx)
+    {
+        cell_out[cell_idx] = l_ptr->m_density[cell_idx];
+    }
 
-  // if (model_str == "lba") {
-  //   l_ptr->lba_likelihood(parameters, debug);
-  // } else if (model_str == "fastdm") {
-  //   l_ptr->ddm_likelihood(parameters, debug);
-  // } else {
-  //   throw std::runtime_error("Undefined model type");
-  // }
-
-  Rcpp::List cell_out(n_cell);
-
-  for (size_t cell_idx = 0; cell_idx < n_cell; ++cell_idx) {
-    cell_out[cell_idx] = l_ptr->m_density[cell_idx];
-  }
-
-  return cell_out;
+    return cell_out;
 }
