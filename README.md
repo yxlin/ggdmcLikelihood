@@ -1,15 +1,17 @@
-<<<<<<< HEAD
-# ggdmcLikelihood
-ggdmcLikelihood provides likelihood computation functions for the ggdmc package. It supports both single-subject and multi-subject likelihood computations.
+This package provides a user interface for efficiently computing likelihoods 
+in design-based choice response time models. It is built to integrate with 
+the 'ggdmc' package, enabling rapid initialisation of starting samples for 
+genetic algorithms, which typically use a large number of Markov chains. The
+likelihood computation supports both single-subject and multi-subject models.
+Implemented methods include fast evaluation of likelihoods across trial-level
+data, support for various response time distributions (e.g., diffusion models).
+Ideal for cognitive scientists and decision modellers, this tool enhances the
+usability and computational performance of complex model fitting tasks in 
+experimental psychology and behavioral data research.
 
 # Getting Started
-The package is mainly to support ggdmc, so you can use it together with other ggdmc supporting packages.
-=======
-This package provides a user interface for efficiently computing likelihoods in design-based choice response time models. It is built to integrate with the 'ggdmc' package, enabling rapid initialisation of starting samples for genetic algorithms, which typically use a large number of Markov chains. The likelihood computation supports both single-subject and multi-subject models. Implemented methods include fast evaluation of likelihoods across trial-level data, support for various response time distributions (e.g., diffusion models). Ideal for cognitive scientists and decision modellers, this tool enhances the usability and computational performance of complex model fitting tasks in experimental psychology and behavioral data research.
-
-# Getting Started
-The package is mainly to support the 'ggdmc' package. Although you could use it in other situations, it works most seamlessly with the 'ggdmc' ecosystem.
->>>>>>> 1804e22 (reconnect to the hub, after moving the folder location)
+The package is mainly to support the 'ggdmc' package. Although you could use it 
+in other situations, it works most seamlessly with the 'ggdmc' ecosystem.
 
 ```
 model <- ggdmcModel::BuildModel(
