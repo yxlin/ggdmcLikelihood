@@ -10,6 +10,13 @@ This package provides functions likelihood computations associated
 with the ggdmc package. The package supports both single-subject
 and multi-subject likelihood computations.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/yxlin/ggdmcModel}
+}
+
+}
 \author{
 Yi-Shin Lin <yishinlin001@gmail.com>
 }

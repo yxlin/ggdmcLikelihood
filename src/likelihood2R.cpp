@@ -14,7 +14,11 @@
 //'
 //' @param dmis A List of S4 data model instances (one per subject)
 //' @param dmi One S4 data model instance (for one subject)
+<<<<<<< HEAD
 //' @param parameter_r A List (one per subject) of or one NumericVectors
+=======
+//' @param parameter_r A List (one per subject) of or one 'NumericVectors'
+>>>>>>> 1804e22 (reconnect to the hub, after moving the folder location)
 //'                    containing model parameters
 //' @param debug Logical flag for debug mode (default = FALSE)
 //'
@@ -28,8 +32,14 @@
 //'          element is the likelihood for a condition.
 //' }
 //'
+<<<<<<< HEAD
 //' @details These function expose the internal mechanism of the design-based
 //' likelihood computation.
+=======
+//' @details These functions expose the internal mechanism of the design-based
+//' likelihood computation.
+//'
+>>>>>>> 1804e22 (reconnect to the hub, after moving the folder location)
 //' @examples
 //' \dontrun{
 //' model <- ggdmcModel::BuildModel(
@@ -41,6 +51,11 @@
 //'     accumulators = c("r1", "r2"),
 //'     type = "lba" )
 //'
+<<<<<<< HEAD
+=======
+//' # You will need to have a data set, 'hdat', either from the real-world or
+//' # from a simulation.
+>>>>>>> 1804e22 (reconnect to the hub, after moving the folder location)
 //' dmis <- ggdmcModel::BuildDMI(hdat, model)
 //' nsubject <- length(unique(hdat$s))
 //' parameters <- list()
@@ -111,7 +126,7 @@ Rcpp::List compute_subject_likelihood(const Rcpp::S4 &dmi,
     auto parameters = Rcpp::as<std::vector<double>>(parameter_r);
     size_t n_cell = l_ptr->m_model->m_n_cell;
 
-    // This step computes likelihoods and create an output, m_density.
+    // This step computes likelihoods and creates an output, named 'm_density'.
     l_ptr->likelihood(parameters, debug);
     Rcpp::List cell_out(n_cell);
 

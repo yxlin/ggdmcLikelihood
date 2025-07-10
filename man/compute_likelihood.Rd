@@ -12,7 +12,7 @@ compute_subject_likelihood(dmi, parameter_r, debug = FALSE)
 \arguments{
 \item{dmis}{A List of S4 data model instances (one per subject)}
 
-\item{parameter_r}{A List (one per subject) of or one NumericVectors
+\item{parameter_r}{A List (one per subject) of or one 'NumericVectors'
 containing model parameters}
 
 \item{debug}{Logical flag for debug mode (default = FALSE)}
@@ -38,7 +38,11 @@ These functions compute likelihoods for behavioural models, with
 \code{compute_subject_likelihood} handling a single subject and
 \code{compute_likelihood} handling multiple subjects.
 
+<<<<<<< HEAD
 These function expose the internal mechanism of the design-based
+=======
+These functions expose the internal mechanism of the design-based
+>>>>>>> 1804e22 (reconnect to the hub, after moving the folder location)
 likelihood computation.
 }
 \examples{
@@ -52,6 +56,11 @@ model <- ggdmcModel::BuildModel(
     accumulators = c("r1", "r2"),
     type = "lba" )
 
+<<<<<<< HEAD
+=======
+# You will need to have a data set, 'hdat', either from the real-world or
+# from a simulation.
+>>>>>>> 1804e22 (reconnect to the hub, after moving the folder location)
 dmis <- ggdmcModel::BuildDMI(hdat, model)
 nsubject <- length(unique(hdat$s))
 parameters <- list()
