@@ -38,11 +38,7 @@ These functions compute likelihoods for behavioural models, with
 \code{compute_subject_likelihood} handling a single subject and
 \code{compute_likelihood} handling multiple subjects.
 
-<<<<<<< HEAD
-These function expose the internal mechanism of the design-based
-=======
 These functions expose the internal mechanism of the design-based
->>>>>>> 1804e22 (reconnect to the hub, after moving the folder location)
 likelihood computation.
 }
 \examples{
@@ -56,11 +52,8 @@ model <- ggdmcModel::BuildModel(
     accumulators = c("r1", "r2"),
     type = "lba" )
 
-<<<<<<< HEAD
-=======
 # You will need to have a data set, 'hdat', either from the real-world or
 # from a simulation.
->>>>>>> 1804e22 (reconnect to the hub, after moving the folder location)
 dmis <- ggdmcModel::BuildDMI(hdat, model)
 nsubject <- length(unique(hdat$s))
 parameters <- list()
