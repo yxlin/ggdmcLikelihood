@@ -4,24 +4,21 @@
 \name{ggdmcLikelihood}
 \alias{ggdmcLikelihood-package}
 \alias{ggdmcLikelihood}
-\title{Likelihood tools for the ggdmc package}
+\title{Likelihood Tools for the \code{ggdmc} Package}
 \description{
-This package provides a user interface for efficiently computing 
-likelihoods in design-based choice response time models. It is built to
-integrate with the 'ggdmc' package, enabling rapid initialisation of 
-starting samples for genetic algorithms, which typically use a large 
-number of Markov chains. The likelihood computation supports both 
-single-subject and multi-subject models. Implemented methods include 
-fast evaluation of likelihoods across trial-level data, support for 
-various response time distributions (e.g., diffusion models). Ideal 
-for cognitive scientists and decision modellers, this tool enhances 
-the usability and computational performance of complex model fitting
-tasks in experimental psychology and behavioral data research.
+Efficient computation of likelihoods in design-based choice response time
+models, including the Decision Diffusion Model, is supported. The package 
+enables rapid evaluation of likelihood functions for both 
+single- and multi-subject models across trial-level data. It also offers 
+fast initilisation of starting parameters for genetic sampling with many 
+Markov chains, facilitating estimation in complex models typically found 
+in experimental psychology and behavioural science. These optimisations 
+help reduce computational overhead in large-scale model fitting tasks.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/yxlin/ggdmcModel}
+  \item \url{https://github.com/yxlin/ggdmcLikelihood}
 }
 
 }

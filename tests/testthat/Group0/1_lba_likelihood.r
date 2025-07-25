@@ -5,7 +5,7 @@ pkg <- c("ggdmcModel", "ggdmcLikelihood")
 
 suppressPackageStartupMessages(tmp <- sapply(pkg, require, character.only = TRUE))
 cat("\nWorking directory: ", getwd(), "\n")
-fn <- "~/Documents/ggdmc/tests/testthat/Group1/data/lba_data0.rda"
+fn <- "lba_data0.rda"
 load(fn)
 
 model <- ggdmcModel::BuildModel(

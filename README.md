@@ -1,17 +1,8 @@
-This package provides a user interface for efficiently computing likelihoods 
-in design-based choice response time models. It is built to integrate with 
-the 'ggdmc' package, enabling rapid initialisation of starting samples for 
-genetic algorithms, which typically use a large number of Markov chains. The
-likelihood computation supports both single-subject and multi-subject models.
-Implemented methods include fast evaluation of likelihoods across trial-level
-data, support for various response time distributions (e.g., diffusion models).
-Ideal for cognitive scientists and decision modellers, this tool enhances the
-usability and computational performance of complex model fitting tasks in 
-experimental psychology and behavioral data research.
+This package helps researchers analyse how people make decisions over time by estimating models of choice and reaction time. It supports a variety of response time models, including the well-known Decision Diffusion Model, and works with data from both individuals and groups. Designed for speed and scalability, it makes it easier to fit complex models—especially when using advanced methods like genetic sampling with many Markov chains. The package is especially useful for experimental psychologists and behavioral scientists who work with large datasets and need fast, accurate model estimation.
 
 # Getting Started
-The package is mainly to support the 'ggdmc' package. Although you could use it 
-in other situations, it works most seamlessly with the 'ggdmc' ecosystem.
+This package is mainly intended to work alongside 'ggdmc', and it integrates most smoothly when used as part of the ggdmc workflow. You can use it on its own, 
+but it’s optimised for that ecosystem.
 
 ```
 model <- ggdmcModel::BuildModel(
