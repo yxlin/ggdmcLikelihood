@@ -1,8 +1,7 @@
-This package helps researchers analyse how people make decisions over time by estimating models of choice and reaction time. It supports a variety of response time models, including the well-known Decision Diffusion Model, and works with data from both individuals and groups. Designed for speed and scalability, it makes it easier to fit complex models—especially when using advanced methods like genetic sampling with many Markov chains. The package is especially useful for experimental psychologists and behavioral scientists who work with large datasets and need fast, accurate model estimation.
+This package helps researchers analyse how people make decisions over time by modelling both their choices and the speed with which they respond (i.e., response times). This genre of analysis, commonly referred to as choice response time modelling, includes well-known frameworks, such as the Decision Diffusion Model (DDM). The package support data from both individuals and groups, and is optimised for speed and scalability, making it well-suited for fitting complex models efficiently. It is particularly valuable for experimental psychologists and behavioral scientists who work with large datasets and require fast, accurate model estimation.
 
 # Getting Started
-This package is mainly intended to work alongside 'ggdmc', and it integrates most smoothly when used as part of the ggdmc workflow. You can use it on its own, 
-but it’s optimised for that ecosystem.
+This package is mainly intended to work alongside 'ggdmc', and it integrates most smoothly when used as part of the ggdmc workflow. 
 
 ```
 model <- ggdmcModel::BuildModel(
