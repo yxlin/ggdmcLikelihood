@@ -1,6 +1,5 @@
-
 #include <ggdmcHeaders/common_type_casting.h>
-#include <ggdmcHeaders/likelihood.h>
+// #include <ggdmcHeaders/likelihood.h>
 #include <ggdmcHeaders/likelihood_type_casting.h>
 
 //' Compute Likelihood for Behavioural Models
@@ -28,9 +27,9 @@
 //'          element is the likelihood for a condition.
 //' }
 //'
-//' @details These functions provide access to the internal mechanism of 
-//' the design-based likelihood computation. They primarily intended to 
-//' initialise new 'samples' or to verify that the likelihood evaluations, 
+//' @details These functions provide access to the internal mechanism of
+//' the design-based likelihood computation. They primarily intended to
+//' initialise new 'samples' or to verify that the likelihood evaluations,
 //' when associated with a particular design, are computed accurately.
 //'
 //' @examples
@@ -44,22 +43,24 @@
 //' )
 //' dat <- hdat[hdat$s==1, ]
 //'
-//' p_vector <- c(A = .75, B = 1.25, mean_v.false = 1.5, mean_v.true = 2.5, t0 = .15)
+//' p_vector <- c(A = .75, B = 1.25, mean_v.false = 1.5, mean_v.true = 2.5,
+//'          t0 = .15)
 //' nsubject <- length(unique(hdat$s))
 //'
 //' if(requireNamespace("ggdmcModel", quietly = TRUE)) {
 //'     BuildModel <- getFromNamespace("BuildModel", "ggdmcModel")
 //'     BuildDMI   <- getFromNamespace("BuildDMI", "ggdmcModel")
-//' 
+//'
 //'     model <- BuildModel(
-//'         p_map = list(A = "1", B = "1", t0 = "1", mean_v = "M", sd_v = "1", st0 = "1"),
+//'         p_map = list(A = "1", B = "1", t0 = "1", mean_v = "M",
+//'                  sd_v = "1", st0 = "1"),
 //'         match_map = list(M = list(s1 = "r1", s2 = "r2")),
 //'         factors = list(S = c("s1", "s2")),
 //'         constants = c(st0 = 0, sd_v = 1),
 //'         accumulators = c("r1", "r2"),
 //'         type = "lba")
-//'     pop_dmis <- BuildDMI(hdat, model)
-//'     sub_dmis <- BuildDMI(dat, model)
+//'    pop_dmis <- BuildDMI(hdat, model)
+//'    sub_dmis <- BuildDMI(dat, model)
 //'
 //'     parameters <- list()
 //'     for (i in seq_len(nsubject)) {
@@ -67,7 +68,8 @@
 //'         parameters[[i]] <- new_p_vector
 //'     }
 //'
-//'     result1 <- compute_subject_likelihood(sub_dmis[[1]], parameters[[1]], FALSE)
+//'     result1 <- compute_subject_likelihood(sub_dmis[[1]],
+//'        parameters[[1]], FALSE)
 //'     result2 <- compute_likelihood(pop_dmis, parameters, FALSE)
 //' }
 //'
@@ -109,6 +111,41 @@ Rcpp::List compute_likelihood(const Rcpp::List &dmis,
     return out;
 }
 
+// Rcpp::List compute_subject_likelihood_old(const Rcpp::S4 &dmi,
+//                                       const Rcpp::NumericVector &parameter_r,
+//                                       bool debug = false)
+// {
+//     if (!dmi.hasSlot("model"))
+//     {
+//         Rcpp::stop("DMI must have the slot: model");
+//     }
+
+//     Rcpp::List data_r = dmi.slot("data");
+//     Rcpp::S4 model_r = dmi.slot("model");
+//     std::string model_str = model_r.slot("type");
+
+//     auto l_ptr = new_likelihood(dmi);
+//     if (debug)
+//     {
+//         l_ptr->print_is_empty_cell("Empty cells: ");
+//         l_ptr->print_rt();
+//     }
+
+//     auto parameters = Rcpp::as<std::vector<double>>(parameter_r);
+//     size_t n_cell = l_ptr->m_model->m_n_cell;
+
+//     // This step computes likelihoods and creates an output, named
+//     'm_density'. l_ptr->likelihood(parameters, debug); Rcpp::List
+//     cell_out(n_cell);
+
+//     for (size_t cell_idx = 0; cell_idx < n_cell; ++cell_idx)
+//     {
+//         cell_out[cell_idx] = l_ptr->m_density[cell_idx];
+//     }
+
+//     return cell_out;
+// }
+
 //' @rdname compute_likelihood
 //' @export
 // [[Rcpp::export]]
@@ -116,15 +153,19 @@ Rcpp::List compute_subject_likelihood(const Rcpp::S4 &dmi,
                                       const Rcpp::NumericVector &parameter_r,
                                       bool debug = false)
 {
-    Rcpp::S4 model_r = dmi.slot("model");
-    Rcpp::List data_r = dmi.slot("data");
-    std::string model_str = model_r.slot("type");
+    if (!dmi.hasSlot("data") || !dmi.hasSlot("model"))
+    {
+        Rcpp::stop("Either `data` or `model` was found in the DMI instance.");
+    }
 
+    Rcpp::List data_r = dmi.slot("data");
+    Rcpp::S4 model_r = dmi.slot("model");
     auto l_ptr = new_likelihood(dmi);
+
     if (debug)
     {
-        l_ptr->print_is_empty_cell("Empty cells: ");
-        l_ptr->print_rt();
+        l_ptr->print_is_empty_cell("A Boolean vector indicating empty cells: ");
+        l_ptr->print_rt("Input data (RT/Response): ");
     }
 
     auto parameters = Rcpp::as<std::vector<double>>(parameter_r);

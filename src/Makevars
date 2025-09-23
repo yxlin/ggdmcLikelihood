@@ -1,5 +1,5 @@
 # Modified (more portable):
-PKG_CPPFLAGS = 
+PKG_CPPFLAGS = -DARMA_USE_CURRENT
 PKG_CXXFLAGS =
 
 PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"`

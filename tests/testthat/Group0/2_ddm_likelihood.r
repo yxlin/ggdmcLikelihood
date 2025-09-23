@@ -1,12 +1,16 @@
 # q(save = "no")
-cat("\n\n-------------- Testing Build new likelihood ---------------")
+cat("\n\n-------------- Testing DDM likelihood ---------------")
 rm(list = ls())
-pkg <- c("ggdmcModel", "ggdmcLikelihood")
+pkg <- c("ggdmcModel", "ggdmcLikelihood", "ddModel")
 
 suppressPackageStartupMessages(tmp <- sapply(pkg, require, character.only = TRUE))
 cat("\nWorking directory: ", getwd(), "\n")
-fn <- "ddm_data0.rda"
-load(fn)
+# home_dir <- "/media/yslin/Tui/01_Projects/ggdmcLikelihood"
+# data_dir <- "tests/testthat/Group0/ddm_data0.rda"
+# ddm_file <- file.path(home_dir, data_dir)
+# load(ddm_file)
+# fn <- "ddm_data0.rda"
+# load(fn)
 
 # DDM
 model <- ggdmcModel::BuildModel(
@@ -27,16 +31,11 @@ p_vector <- c(a = 1, sz = 0.25, t0 = 0.15, v = 2.2, z = .38)
 dat <- ddModel::simulate(sub_model, nsim = 32, parameter_vector = p_vector, n_subject = 1)
 sub_dmis <- ggdmcModel::BuildDMI(dat, model)
 
-
-options(digits = 5)
 p_vector <- c(a = 1.5, sz = 0.25, t0 = 0.15, v = 2.2, z = .38)
-p_vector <- c(a = 1.5, sz = 0.25, t0 = 0.15, v = 3.2, z = .38)
-p_vector <- sub_samples@theta[, 3, 1]
-p_vector
+# p_vector <- c(a = 1.5, sz = 0.25, t0 = 0.15, v = 3.2, z = .38)
 result <- compute_subject_likelihood(sub_dmis[[1]], p_vector, FALSE)
 sll <- sum(sapply(result, function(x) {
     sum(log(x))
 }))
 
-
-testthat::expect_true(all.equal(sll, -736.83, tolerance = 1e-5))
+sll

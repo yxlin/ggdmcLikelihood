@@ -7,11 +7,7 @@
 [![R-CMD-check](https://github.com/yxlin/ggdmcLikelihood/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/yxlin/ggdmcLikelihood/actions/workflows/R-CMD-check.yaml)
 
 
-**ggdmcLikelihood** provides efficient likelihood computation for choice response time models, supporting both accuracy and response time analysis.  
-This class of models, known as *choice response time modelling*, includes well-known frameworks such as the Diffusion Decision Model (DDM) and the Linear Ballistic Accumulator (LBA).  
-
-The package works with data from individuals or groups, and is optimised for speed and scalability.  
-It is particularly suited for experimental psychologists and behavioural scientists who analyse large datasets and require fast, accurate model estimation.
+**ggdmcLikelihood** provides efficient likelihood computation for choice response time models, supporting both accuracy and response time analysis. This class of models, known as *choice response time modelling*, includes well-known frameworks such as the Diffusion Decision Model (DDM) and the Linear Ballistic Accumulator (LBA). The package works with data from individuals or groups, and is optimised for speed and scalability. It is particularly suited for experimental psychologists and behavioural scientists who analyse large datasets and require fast, accurate model estimation.
 
 ---
 

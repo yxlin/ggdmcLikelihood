@@ -1,7 +1,7 @@
 Package: ggdmcLikelihood
 Type: Package
 Title: Likelihood Computation for 'ggdmc' Package
-Version: 0.2.9.0
+Version: 0.2.9.1
 Date: 2025-07-28
 Authors@R: c(person(given = "Yi-Shin", family = "Lin", role = c("aut", "cre"), email = "yishinlin001@gmail.com"))
 Maintainer: Yi-Shin Lin <yishinlin001@gmail.com>

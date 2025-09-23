@@ -38,9 +38,9 @@ These functions compute likelihoods for behavioural models, with
 \code{compute_subject_likelihood} handling a single subject and
 \code{compute_likelihood} handling multiple subjects.
 
-These functions provide access to the internal mechanism of 
-the design-based likelihood computation. They primarily intended to 
-initialise new 'samples' or to verify that the likelihood evaluations, 
+These functions provide access to the internal mechanism of
+the design-based likelihood computation. They primarily intended to
+initialise new 'samples' or to verify that the likelihood evaluations,
 when associated with a particular design, are computed accurately.
 }
 \examples{
@@ -54,7 +54,8 @@ hdat <- data.frame(
 )
 dat <- hdat[hdat$s==1, ]
 
-p_vector <- c(A = .75, B = 1.25, mean_v.false = 1.5, mean_v.true = 2.5, t0 = .15)
+p_vector <- c(A = .75, B = 1.25, mean_v.false = 1.5, mean_v.true = 2.5,
+         t0 = .15)
 nsubject <- length(unique(hdat$s))
 
 if(requireNamespace("ggdmcModel", quietly = TRUE)) {
@@ -62,14 +63,15 @@ if(requireNamespace("ggdmcModel", quietly = TRUE)) {
     BuildDMI   <- getFromNamespace("BuildDMI", "ggdmcModel")
 
     model <- BuildModel(
-        p_map = list(A = "1", B = "1", t0 = "1", mean_v = "M", sd_v = "1", st0 = "1"),
+        p_map = list(A = "1", B = "1", t0 = "1", mean_v = "M",
+                 sd_v = "1", st0 = "1"),
         match_map = list(M = list(s1 = "r1", s2 = "r2")),
         factors = list(S = c("s1", "s2")),
         constants = c(st0 = 0, sd_v = 1),
         accumulators = c("r1", "r2"),
         type = "lba")
-    pop_dmis <- BuildDMI(hdat, model)
-    sub_dmis <- BuildDMI(dat, model)
+   pop_dmis <- BuildDMI(hdat, model)
+   sub_dmis <- BuildDMI(dat, model)
 
     parameters <- list()
     for (i in seq_len(nsubject)) {
@@ -77,7 +79,8 @@ if(requireNamespace("ggdmcModel", quietly = TRUE)) {
         parameters[[i]] <- new_p_vector
     }
 
-    result1 <- compute_subject_likelihood(sub_dmis[[1]], parameters[[1]], FALSE)
+    result1 <- compute_subject_likelihood(sub_dmis[[1]],
+       parameters[[1]], FALSE)
     result2 <- compute_likelihood(pop_dmis, parameters, FALSE)
 }
 

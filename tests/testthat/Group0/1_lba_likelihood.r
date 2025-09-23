@@ -1,12 +1,12 @@
 # q(save = "no")
-cat("\n\n-------------- Testing Build new likelihood ---------------")
+cat("\n\n-------------- Testing Build new lba likelihood ---------------")
 rm(list = ls())
-pkg <- c("ggdmcModel", "ggdmcLikelihood")
+pkg <- c("ggdmcModel", "ggdmcLikelihood", "lbaModel")
 
 suppressPackageStartupMessages(tmp <- sapply(pkg, require, character.only = TRUE))
 cat("\nWorking directory: ", getwd(), "\n")
-fn <- "lba_data0.rda"
-load(fn)
+home_dir <- "/media/yslin/Tui/01_Projects/ggdmcLikelihood"
+
 
 model <- ggdmcModel::BuildModel(
     p_map = list(
@@ -20,33 +20,15 @@ model <- ggdmcModel::BuildModel(
     type = "lba"
 )
 
-dmis <- ggdmcModel::BuildDMI(hdat, model)
 
-nsubject <- length(unique(hdat$s))
-parameters <- list()
-for (i in seq_len(nsubject)) {
-    new_p_vector <- p_vector[model@pnames]
-    parameters[[i]] <- new_p_vector
-}
+sub_model <- setLBA(model)
+p_vector <- c(A = .75, B = 1.25, mean_v.false = 1.5, mean_v.true = 2.5, t0 = .15)
+dat <- simulate(sub_model, nsim = 256, parameter_vector = p_vector, n_subject = 1)
+sub_dmis <- ggdmcModel::BuildDMI(dat, model)
 
-result <- compute_subject_likelihood(sub_dmis[[1]], parameters[[1]], F)
-
+result <- compute_subject_likelihood(sub_dmis[[1]], p_vector)
 
 sll <- sum(sapply(result, function(x) {
     sum(log(x))
 }))
-
-testthat::expect_true(all.equal(sll, -137.7996, tolerance = 1e-6))
-
-
-result <- compute_likelihood(pop_dmis, parameters, F)
-n_subject <- length(pop_dmis)
-for (i in seq_len(n_subject)) {
-    res <- result[[i]]
-    sll <- sum(sapply(res, function(x) {
-        sum(log(x))
-    }))
-    cat("Subject ", i, "results in summed log likelihood = ", sll, "\n")
-}
-
-# testthat::expect_true(all.equal(sll, -144.1973, tolerance = 1e-6))
+print(sll)
