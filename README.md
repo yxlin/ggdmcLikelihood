@@ -6,9 +6,8 @@
 [![License: GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![R-CMD-check](https://github.com/yxlin/ggdmcLikelihood/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/yxlin/ggdmcLikelihood/actions/workflows/R-CMD-check.yaml)
 
-
-**ggdmcLikelihood** provides efficient likelihood computation for choice response time models, supporting both accuracy and response time analysis. This class of models, known as *choice response time modelling*, includes well-known frameworks such as the Diffusion Decision Model (DDM) and the Linear Ballistic Accumulator (LBA). The package works with data from individuals or groups, and is optimised for speed and scalability. It is particularly suited for experimental psychologists and behavioural scientists who analyse large datasets and require fast, accurate model estimation.
-
+**ggdmcLikelihood 0.2.9.1 (development)** provides efficient likelihood computation for choice response time models, supporting both accuracy and response time analysis. These models, collectively known as *choice response time models*, include established frameworks such as the Diffusion Decision Model (DDM) and the Linear Ballistic Accumulation Model (LBA). The development version also extends functionality to the Cognitive Diagnostic Model (CDM), enabling applications in skill diagnosis and educational measurement. Designed for both individual- and group-level data, the package is optimised for speed and scalability. It is particularly suited for experimental psychologists and behavioural scientists analysing large datasets who require fast and accurate model estimation.
+ 
 ---
 
 ## 📦 Prerequisites
@@ -21,10 +20,13 @@
 
 ## 📥 Installation
 
-From CRAN:
+### Development version from GitHub
+
 ```r
-install.packages("ggdmcLikelihood")
+# install.packages("remotes")
+remotes::install_github("yxlin/ggdmcHeaders", ref = "dev")
 ```
+
 
 ## 🚀 Getting Started
 This package is primarily designed to work with ggdmc and integrates seamlessly into the ggdmc workflow.
@@ -70,6 +72,66 @@ for (i in seq_len(length(pop_dmis))) {
 }
 ```
 
+### Example: CDM Likelihood Computation
+
+```r
+model <- ggdmcModel::BuildModel(
+    p_map = list(
+        guess1 = "1", guess2 = "1", guess3 = "1", guess4 = "1", guess5 = "1",
+        slip1 = "1", slip2 = "1", slip3 = "1", slip4 = "1", slip5 = "1"
+    ),
+    factors = NULL,
+    constants = NULL,
+    match_map = NULL,
+    accumulators = NULL,
+    type = "cdm",
+    verbose = TRUE
+)
+
+p_vector <- c(
+    guess1 = .2, guess2 = .5, guess3 = .2, guess4 = .2, guess5 = .2,
+    slip1 = .1, slip2 = .8, slip3 = .1, slip4 = .1, slip5 = .1
+)
+
+Q <- matrix(c(
+    1, 0,
+    0, 1,
+    1, 1,
+    1, 0,
+    0, 1
+), ncol = 2, byrow = TRUE)
+colnames(Q) <- c("A1", "A2")
+
+n_item <- nrow(Q)
+n_skill <- ncol(Q)
+n_profile <- 2^(n_skill)
+pi_uniform <- rep(1 / n_profile, n_profile)
+
+
+sub_model <- cdModel::setCDM(model, q_matrix = Q, prior_pi = pi_uniform, rule = "DINO")
+
+N <- 10000
+dat <- cdModel::simulate(sub_model,
+    nsim = N, parameter_vector = p_vector,
+    nschool = 1,
+    debug = FALSE, seed = 123
+)
+
+
+sub_dmis <- ggdmcModel::BuildDMI(dat$responses, model,
+    q_matrix = Q, prior_pi = pi_uniform,
+    rule = "DINO"
+)
+
+
+res <- compute_subject_likelihood(
+    sub_dmis[[1]],
+    p_vector
+)
+sum(log(res[[1]]))
+
+
+```
 ## 📄 License
 GPL (≥ 3)
 
