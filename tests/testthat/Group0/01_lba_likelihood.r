@@ -32,3 +32,4 @@ sll <- sum(sapply(result, function(x) {
     sum(log(x))
 }))
 print(sll)
+# result

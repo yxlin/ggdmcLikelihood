@@ -2,7 +2,8 @@
 PKG_CPPFLAGS = -DARMA_USE_CURRENT
 PKG_CXXFLAGS =
 
-PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"`
+PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
+
 # Set the C++ standard to C++17
 # CXX_STD = CXX17
 # PKG_CXXFLAGS = -std=c++17 -O2 -Wall -march=native -mtune=native

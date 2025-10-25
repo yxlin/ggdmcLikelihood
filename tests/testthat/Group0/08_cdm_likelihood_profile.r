@@ -3,7 +3,7 @@ cat("\n\n-------------- Testing CDM likelihood ---------------")
 rm(list = ls())
 pkg <- c("ggdmc", "ggdmcModel", "ggdmcLikelihood", "cdModel", "ggdmcPrior", "ggplot2")
 
-suppressPackageStartupMessages(tmp <- sapply(pkg, require, character.only = TRUE))
+sapply(pkg, require, character.only = TRUE)
 cat("\nWorking directory: ", getwd(), "\n")
 
 home_dir <- "/media/yslin/Tui/01_Projects/ggdmcLikelihood/tests/testthat/Group0"
@@ -83,24 +83,6 @@ make_surface <- function(par_guess, par_slip,
     grid
 }
 
-
-
-model <- BuildModel(
-    p_map = list(
-        guess1 = "1", guess2 = "1", guess3 = "1", guess4 = "1", guess5 = "1",
-        slip1 = "1", slip2 = "1", slip3 = "1", slip4 = "1", slip5 = "1"
-    ),
-    # factors = list(S = c("s1", "s2")),
-    factors = NULL,
-    constants = NULL,
-    match_map = NULL,
-    accumulators = NULL,
-    type = "cdm",
-    verbose = TRUE
-)
-
-
-
 Q <- matrix(c(
     1, 0,
     0, 1,
@@ -108,21 +90,34 @@ Q <- matrix(c(
     1, 0,
     0, 1
 ), ncol = 2, byrow = TRUE)
-colnames(Q) <- c("A1", "A2")
 
-n_item <- nrow(Q)
-n_skill <- ncol(Q)
-n_profile <- 2^(n_skill)
-pi_uniform <- rep(1 / n_profile, n_profile)
+colnames(Q) <- c("Algebra", "Geometry")
+rownames(Q) <- c("Item1", "Item2", "Item3", "Item4", "Item5")
+
+model <- BuildModel(
+    p_map = list(
+        guess1 = "1", guess2 = "1", guess3 = "1", guess4 = "1", guess5 = "1",
+        pi1 = "1", pi2 = "1", pi3 = "1",
+        slip1 = "1", slip2 = "1", slip3 = "1", slip4 = "1", slip5 = "1"
+    ),
+    factors = NULL,
+    constants = NULL,
+    match_map = NULL,
+    accumulators = Q,
+    type = "cdm",
+    verbose = TRUE
+)
 
 
 # ---- True item parameters (guessing g_j, slipping s_j)
 pop_mean <- c(
     guess1 = .2, guess2 = .2, guess3 = .2, guess4 = .2, guess5 = .2,
+    pi1 = 0.1, pi2 = 0.2, pi3 = 0.5,
     slip1 = .1, slip2 = .1, slip3 = .1, slip4 = .1, slip5 = .1
 )
 pop_scale <- c(
     guess1 = .01, guess2 = .01, guess3 = .01, guess4 = .01, guess5 = .01,
+    pi1 = 0.01, pi2 = 0.01, pi3 = 0.01,
     slip1 = .01, slip2 = .01, slip3 = .01, slip4 = .01, slip5 = .01
 )
 
@@ -135,15 +130,22 @@ pop_dist <- BuildPrior(
     log_p = rep(F, model@npar)
 )
 
-sub_model <- setCDM(model, q_matrix = Q, prior_pi = pi_uniform)
+sub_model <- setCDM(model,
+    q_matrix = model@cdm_info$q_matrix,
+    profile_probability = model@cdm_info$profile_probability
+)
+
+
 pop_model <- setCDM(model,
-    population_distribution = pop_dist, q_matrix = Q,
-    prior_pi = pi_uniform
+    population_distribution = pop_dist,
+    q_matrix = model@cdm_info$q_matrix,
+    profile_probability = model@cdm_info$profile_probability
 )
 
 
 p_vector <- c(
     guess1 = .2, guess2 = .5, guess3 = .2, guess4 = .2, guess5 = .2,
+    pi1 = 0.1, pi2 = 0.2, pi3 = 0.5,
     slip1 = .1, slip2 = .8, slip3 = .1, slip4 = .1, slip5 = .1
 )
 
@@ -163,6 +165,16 @@ p_prior <- BuildPrior(
 
 # plot_prior(p_prior)
 sub_priors <- set_priors(p_prior = p_prior)
+ncell <- length(sub_model@model@cell_names)
+
+slotNames(sub_model)
+
+name_sorted_p_vector <- p_vector[sort(names(p_vector))]
+name_sorted_p_vector
+nschool <- 1
+param_matrix <- t(sapply(seq_len(nschool), function(i) {
+    matrix(name_sorted_p_vector, nrow = 1, ncol = sub_model@model@npar)
+}))
 
 
 dat <- simulate(sub_model,
@@ -170,8 +182,17 @@ dat <- simulate(sub_model,
     nschool = 1,
     debug = F, seed = 123
 )
+# head(dat$responses)
+# names(dat)
+# head(dat$alpha)
 
-sub_dmis <- BuildDMI(dat$responses, model, q_matrix = Q, prior_pi = pi_uniform)
+
+sub_dmis <- BuildDMI(dat$responses, model,
+    q_matrix = model@cdm_info$q_matrix,
+    profile_probability = model@cdm_info$profile_probability,
+    rule = "DINA"
+)
+
 # tibble::as_tibble(dat$responses)
 # head(dat$responses$C)
 
@@ -181,8 +202,10 @@ nll <- function(par_vec, dmi = sub_dmis[[1]]) {
     -sll_from_p(par_vec, dmi)
 }
 
+slotNames(sub_dmis[[1]])
 
 start <- p_vector * runif(length(p_vector), 0.8, 1.2) # jittered start
+start
 
 fit <- optim(
     par = start,
@@ -195,6 +218,7 @@ fit <- optim(
 fit$par # estimated parameters
 -fit$value # max log-likelihood
 
+options(digits = 3)
 rbind(fit$par, p_vector)
 
 res1 <- compute_subject_likelihood(sub_dmis[[1]], p_vector, TRUE)

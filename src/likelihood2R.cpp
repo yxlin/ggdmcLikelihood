@@ -1,5 +1,4 @@
 #include <ggdmcHeaders/common_type_casting.h>
-// #include <ggdmcHeaders/likelihood.h>
 #include <ggdmcHeaders/likelihood_type_casting.h>
 
 //' Compute Likelihood for Behavioural Models
@@ -110,41 +109,6 @@ Rcpp::List compute_likelihood(const Rcpp::List &dmis,
 
     return out;
 }
-
-// Rcpp::List compute_subject_likelihood_old(const Rcpp::S4 &dmi,
-//                                       const Rcpp::NumericVector &parameter_r,
-//                                       bool debug = false)
-// {
-//     if (!dmi.hasSlot("model"))
-//     {
-//         Rcpp::stop("DMI must have the slot: model");
-//     }
-
-//     Rcpp::List data_r = dmi.slot("data");
-//     Rcpp::S4 model_r = dmi.slot("model");
-//     std::string model_str = model_r.slot("type");
-
-//     auto l_ptr = new_likelihood(dmi);
-//     if (debug)
-//     {
-//         l_ptr->print_is_empty_cell("Empty cells: ");
-//         l_ptr->print_rt();
-//     }
-
-//     auto parameters = Rcpp::as<std::vector<double>>(parameter_r);
-//     size_t n_cell = l_ptr->m_model->m_n_cell;
-
-//     // This step computes likelihoods and creates an output, named
-//     'm_density'. l_ptr->likelihood(parameters, debug); Rcpp::List
-//     cell_out(n_cell);
-
-//     for (size_t cell_idx = 0; cell_idx < n_cell; ++cell_idx)
-//     {
-//         cell_out[cell_idx] = l_ptr->m_density[cell_idx];
-//     }
-
-//     return cell_out;
-// }
 
 //' @rdname compute_likelihood
 //' @export
