@@ -3,7 +3,7 @@ cat("\n\n-------------- Testing CDM likelihood ---------------")
 rm(list = ls())
 pkg <- c("ggdmc", "ggdmcModel", "cdModel", "ggdmcPrior")
 suppressPackageStartupMessages(pkg_ok <- sapply(pkg, require, character.only = TRUE))
-home_dir <- "/media/yslin/Tui/01_Projects/ggdmcLikelihood/tests/testthat"
+home_dir <- "/media/yslin/Tui/01_Projects/ggdmc_ecosystem/ggdmcLikelihood/tests/testthat"
 mle_fun <- file.path(home_dir, "Group0/00_mle_helper.r")
 setwd(home_dir)
 cat("\nWorking directory: ", getwd(), "\n")
@@ -81,7 +81,6 @@ sub_dmis <- BuildDMI(dat$responses, model,
     rule = "DINA",
     use_mvn = FALSE
 )
-
 
 
 true_p_vector <- c(
